@@ -2,10 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+input[type="name"],
 input[type="text"],
 input[type="password"],
 input[type="email"] {
-  @apply w-full border my-1 rounded-2xl px-2  text-center;
+  @apply w-full border my-1 rounded-2xl px-2;
 }
 button.primary {
   background-color: #f5385d;
