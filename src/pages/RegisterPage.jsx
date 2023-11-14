@@ -22,12 +22,16 @@ export const RegisterPage = () => {
 
   const registerUser = async (ev) => {
     ev.preventDefault();
-    const response = axios.post("/register", {
-      userName,
-      email,
-      password,
-    });
-    console.log("respuesta servidor", response);
+    try {
+      const response = await axios.post("/register", {
+        userName,
+        email,
+        password,
+      });
+      alert("registration successful, now you can login");
+    } catch (err) {
+      alert("registration failed, please try again later");
+    }
   };
 
   return (
