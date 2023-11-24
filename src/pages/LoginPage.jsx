@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useState } from "react";
+import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
+import { UserContext } from "../UserContext";
 
 export const LoginPage = () => {
   const [formState, setformState] = useState({
@@ -8,6 +9,8 @@ export const LoginPage = () => {
     password: "",
   });
   const { email, password } = formState;
+  const [redirect, setRedirect] = useState(false);
+  const { setUser } = useContext(UserContext);
 
   const onInputValue = (event) => {
     const { name, value } = event.target;
@@ -20,12 +23,20 @@ export const LoginPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.post("/login", { email, password });
+      console.log("Submitting with data:", { email, password });
+      const response = await axios.post("/login", { email, password });
+      setUser(response.data);
+      console.log("userdata_:", response.data);
       alert("login successful");
+      setRedirect(true);
     } catch (error) {
       alert("login failed");
+      console.error("Error:", error);
     }
   };
+  if (redirect) {
+    return <Navigate to={"/"}></Navigate>;
+  }
   return (
     <div className=" pt-6 flex flex-col grow justify-around  ">
       <div className="mb-64">
