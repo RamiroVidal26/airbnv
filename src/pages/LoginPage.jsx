@@ -10,7 +10,7 @@ export const LoginPage = () => {
   });
   const { email, password } = formState;
   const [redirect, setRedirect] = useState(false);
-  const { setUser } = useContext(UserContext);
+  const { setUser, setReady } = useContext(UserContext);
 
   const onInputValue = (event) => {
     const { name, value } = event.target;
@@ -26,6 +26,7 @@ export const LoginPage = () => {
       console.log("Submitting with data:", { email, password });
       const response = await axios.post("/login", { email, password });
       setUser(response.data);
+      setReady(true);
       console.log("userdata_:", response.data);
       alert("login successful");
       setRedirect(true);
