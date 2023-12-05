@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
@@ -8,6 +9,8 @@ export const PlacesPage = () => {
   const [val2, setVal2] = useState("");
   const [selectedCheckIn, setSelectedCheckin] = useState("");
   const [selectedCheckOut, setSelectedCheckOut] = useState("");
+  const [guestsNumber, setGuestsNumber] = useState("");
+  const [photosList, setPhotosList] = useState([]);
 
   const hours = [
     "8:00 AM",
@@ -23,6 +26,7 @@ export const PlacesPage = () => {
     "6:00 PM",
     "7:00 PM",
   ];
+  const guests = [1, 2, 3, 4, 6, 8, 10, 12, 14, 16, 18, 20, "Indefinido"];
 
   const handleTextareaChange = (e) => {
     setVal(e.target.value);
@@ -36,6 +40,9 @@ export const PlacesPage = () => {
   const handleCheckOutChange = (e) => {
     setSelectedCheckOut(e.target.value);
   };
+  const handleGuestsNumber = (e) => {
+    setGuestsNumber(e.target.value);
+  };
   useEffect(() => {
     if (textAreaRef.current) {
       textAreaRef.current.style.height = "auto";
@@ -44,9 +51,23 @@ export const PlacesPage = () => {
     }
   }, [val]);
 
-  function handleFileUpload(e) {
-    const files = e.target.files;
-    console.log(files);
+  async function handleFileUpload(ev) {
+    try {
+      const files = ev.target.files;
+      const data = new FormData();
+      for (let i = 0; i < files.length; i++) {
+        data.append("photos", files[i]);
+      }
+      console.log("Data before sending:", data);
+      const response = await axios.post("/upload", data, {
+        headers: { "Content-type": "multipart/form-data" },
+      });
+      console.log("Response from server:", response.data);
+      const { data: filename } = response;
+      setPhotosList((prev) => [...prev, filename]);
+    } catch (error) {
+      console.error("Error en la carga de archivos:", error);
+    }
   }
 
   return (
@@ -101,7 +122,7 @@ export const PlacesPage = () => {
                 accept="image/*"
                 multiple
                 style={{ display: "none" }}
-                onChange={(e) => handleFileUpload(e)}
+                onChange={handleFileUpload}
               />
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -142,13 +163,13 @@ export const PlacesPage = () => {
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                     stroke="currentColor"
-                    class="w-6 h-6"
+                    className="w-6 h-6"
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                       d="M8.288 15.038a5.25 5.25 0 017.424 0M5.106 11.856c3.807-3.808 9.98-3.808 13.788 0M1.924 8.674c5.565-5.565 14.587-5.565 20.152 0M12.53 18.22l-.53.53-.53-.53a.75.75 0 011.06 0z"
                     />
                   </svg>
@@ -229,13 +250,13 @@ export const PlacesPage = () => {
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                     stroke="currentColor"
-                    class="w-6 h-6"
+                    className="w-6 h-6"
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                       d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125z"
                     />
                   </svg>
@@ -315,34 +336,57 @@ export const PlacesPage = () => {
             <h2 className="text-xl font-medium mb-1 mt-3">
               Check-in y Check-out
             </h2>
-            <select
-              id="horarios"
-              value={selectedCheckIn}
-              onChange={handleCheckInChange}
-            >
-              <option value="" disabled>
-                Selecciona un horario
-              </option>
-              {hours.map((hours) => (
-                <option key={hours} value={hours}>
-                  {hours}
+            <div className="mt-4  items-center ">
+              <select
+                id="horarios"
+                value={selectedCheckIn}
+                onChange={handleCheckInChange}
+                className="mr-3 border p-4 shadow-md rounded-2xl "
+              >
+                <option value="" disabled>
+                  Selecciona un horario
                 </option>
-              ))}
-            </select>
-            <select
-              id="horarios"
-              value={selectedCheckOut}
-              onChange={handleCheckOutChange}
-            >
-              <option value="" disabled>
-                Selecciona un horario
-              </option>
-              {hours.map((hours) => (
-                <option key={hours} value={hours}>
-                  {hours}
+                {hours.map((hours) => (
+                  <option key={hours} value={hours}>
+                    {hours}
+                  </option>
+                ))}
+              </select>
+
+              <select
+                id="horarios"
+                value={selectedCheckOut}
+                onChange={handleCheckOutChange}
+                className=" mr-3 border p-4 shadow-md rounded-2xl"
+              >
+                <option value="" disabled>
+                  Selecciona un horario
                 </option>
-              ))}
-            </select>
+                {hours.map((hours) => (
+                  <option key={hours} value={hours}>
+                    {hours}
+                  </option>
+                ))}
+              </select>
+              <select
+                id="guests"
+                value={guestsNumber}
+                onChange={handleGuestsNumber}
+                className=" border p-4 shadow-md rounded-2xl"
+              >
+                <option value="" disabled>
+                  Número máximo de Personas
+                </option>
+                {guests.map((guest) => (
+                  <option key={guest} value={guest}>
+                    {guest}
+                  </option>
+                ))}
+              </select>
+              <div>
+                <button className="  mt-3 primary !w-1/5">Guardar</button>
+              </div>
+            </div>
           </form>
         </div>
       )}
