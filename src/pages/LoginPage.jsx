@@ -18,16 +18,14 @@ export const LoginPage = () => {
       ...prevState,
       [name]: value,
     }));
-    console.log("target:", event.target.value);
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      console.log("Submitting with data:", { email, password });
       const response = await axios.post("/login", { email, password });
       setUser(response.data);
       setReady(true);
-      console.log("userdata_:", response.data);
+
       alert("login successful");
       setRedirect(true);
     } catch (error) {

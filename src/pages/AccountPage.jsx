@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../UserContext";
 import { Link, Navigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -25,7 +25,7 @@ export const AccountPage = () => {
     return "loading...";
   }
 
-  function linlkClasses(type = null) {
+  function linkClasses(type = null) {
     let classes = "py-2 px-6 flex gap-1 rounded-full";
     if (type === subpage) {
       classes += " bg-primary text-white    ";
@@ -37,10 +37,11 @@ export const AccountPage = () => {
   if (loggedOut) {
     return <Navigate to={loggedOut} />;
   }
+
   return (
     <div>
       <nav className=" w-full  flex justify-center gap-2 mt-8">
-        <Link className={linlkClasses("profile")} to={"/account"}>
+        <Link className={linkClasses("profile")} to={"/account"}>
           <div className="flex items-center gap-1.5">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -53,7 +54,7 @@ export const AccountPage = () => {
             My profile
           </div>
         </Link>
-        <Link className={linlkClasses("bookings")} to={"/account/bookings"}>
+        <Link className={linkClasses("bookings")} to={"/account/bookings"}>
           <div className="flex items-center gap-1.5">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -66,7 +67,7 @@ export const AccountPage = () => {
             My bookings
           </div>
         </Link>
-        <Link className={linlkClasses("places")} to={"/account/places"}>
+        <Link className={linkClasses("places")} to={"/account/places"}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

@@ -17,7 +17,6 @@ export const RegisterPage = () => {
       ...prevState,
       [name]: value,
     }));
-    console.log(event.target);
   };
 
   const registerUser = async (ev) => {
