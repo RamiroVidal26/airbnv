@@ -5,6 +5,8 @@ export const CheckInOut = ({
   selectedCheckIn,
   selectedCheckOut,
   guestsNumber,
+  price,
+  setPrice,
 }) => {
   const guests = [1, 2, 3, 4, 6, 8, 10, 12, 14, 16, 18, 20, "Indefinido"];
   const hours = [
@@ -30,10 +32,13 @@ export const CheckInOut = ({
   const handleGuestsNumber = (e) => {
     onChangeGuests(e.target.value);
   };
+  const handlePrice = (e) => {
+    setPrice(e.target.value);
+  };
   return (
     <>
       <h2 className="text-xl font-medium mb-1 mt-3">Check-in y Check-out</h2>
-      <div className="mt-4  items-center ">
+      <div className="mt-4  items-center grid 2xl:grid-cols-3  gap-4">
         <select
           id="horarios"
           value={selectedCheckIn}
@@ -80,10 +85,20 @@ export const CheckInOut = ({
             </option>
           ))}
         </select>
-
-        <div>
-          <button className="  mt-3 primary !w-1/5">Guardar</button>
-        </div>
+      </div>
+      <h2 className="text-xl font-medium mb-1 mt-5">Precio por noche</h2>
+      <div className="flex mb-5 items-center">
+        <span className="text-lg font-medium mr-2">$USD</span>
+        <input
+          type="number"
+          name="precio"
+          placeholder="100"
+          value={price}
+          onChange={handlePrice}
+        />
+      </div>
+      <div>
+        <button className="  mt-3 primary !w-1/5">Guardar</button>
       </div>
     </>
   );

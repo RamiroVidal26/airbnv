@@ -25,9 +25,7 @@ export const PlacesPage = () => {
   const handleDescription = (e) => {
     setDescription(e.target.value);
   };
-  const handlePrice = (e) => {
-    setPrice(e.target.value);
-  };
+
   const handleExtraInfo = (e) => {
     setExtraInfo(e.target.value);
   };
@@ -61,6 +59,7 @@ export const PlacesPage = () => {
       setPhotosList(data.photos);
       setSelectedCheckOut(data.checkOut);
       setSelectedCheckin(data.checkIn);
+      setPrice(data.price);
     });
   }, [id]);
 
@@ -103,6 +102,7 @@ export const PlacesPage = () => {
       description,
       servicios,
       photosList,
+      price,
     };
     //update
     if (id) {
@@ -125,6 +125,7 @@ export const PlacesPage = () => {
           description,
           servicios,
           photosList,
+          price,
         };
         await axios.post("/places", placeData);
       } catch (error) {
@@ -214,17 +215,6 @@ export const PlacesPage = () => {
               extraInfo={extraInfo}
               handleExtraInfo={handleExtraInfo}
             />
-            <h2 className="text-xl font-medium mb-1 mt-5">Precio por noche</h2>
-            <div className="flex mb-5 items-center">
-              <span className="text-lg font-medium mr-2">$USD</span>
-              <input
-                type="number"
-                name="precio"
-                placeholder="100"
-                value={price}
-                onChange={handlePrice}
-              />
-            </div>
 
             <CheckInOut
               selectedCheckIn={selectedCheckIn}
@@ -233,6 +223,8 @@ export const PlacesPage = () => {
               onChangeCheckOut={setSelectedCheckOut}
               guestsNumber={guestsNumber}
               onChangeGuests={setGuestsNumber}
+              setPrice={setPrice}
+              price={price}
             />
           </form>
         </div>
@@ -251,7 +243,7 @@ export const PlacesPage = () => {
                     <img
                       src={`http://localhost:4000/uploads/` + place.photos[0]}
                       alt=""
-                      className=" object-cover rounded-lg "
+                      className=" object-cover aspect-square rounded-lg "
                     />
                   )}
                 </div>
