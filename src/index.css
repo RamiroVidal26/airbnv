@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 input[type="text"],
+input[type="tel"],
 input[type="password"],
 input[type="email"] {
   @apply w-full border my-1 rounded-2xl px-2;
